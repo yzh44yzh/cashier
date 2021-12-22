@@ -10,8 +10,9 @@ defmodule Cashier.Model do
     defmodule Item do
       alias Cashier.Model
 
+      @type id :: String.t
       @type t :: %__MODULE__{
-        id: String.t,
+        id: id,
         name: String.t,
         price: Model.money
       }
@@ -22,9 +23,10 @@ defmodule Cashier.Model do
 
     defmodule Cart do
       alias Cashier.Model
+      alias Cashier.Model.Shop.Item
 
       @type t :: %__MODULE__{
-        items: %{Model.Shop.Item.t => Model.quantity}
+        items: %{Item.t => Model.quantity}
       }
 
       defstruct [items: %{}]
@@ -34,13 +36,19 @@ defmodule Cashier.Model do
         %__MODULE__{}
       end
 
-      @spec add_item(t, Model.Shop.Item.t) :: t
+      @spec add_item(t, Item.t) :: t
       def add_item(cart, item) do
-        Map.update(cart, item, 1, fn(q) -> q + 1 end)
+        items = Map.update(cart.items, item, 1, fn(q) -> q + 1 end)
+        %__MODULE__{cart | items: items}
       end
 
     end
 
   end
+
+
+  # DiscountStrategy
+
+  # Discount :: %{Item.id => Strategy}
 
 end

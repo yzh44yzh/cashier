@@ -5,9 +5,9 @@
 - [X] Currency & Money `{:eurocent, 311}`
 - [X] Item
 - [X] Shopping Cart
-- [ ] Discount Strategy
-
 - [ ] Shopping Cart test
+- [ ] dialyzer
+- [ ] Discount Strategy
 - [ ] Discount Strategy test
 
 
