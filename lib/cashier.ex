@@ -1,6 +1,7 @@
 defmodule Cashier do
 
   alias Cashier.Model.Shop, as: S
+  alias Cashier.Model.Discount, as: D
 
   def shopping_cart_example() do
     S.Cart.new()
@@ -8,6 +9,10 @@ defmodule Cashier do
     |> S.Cart.add_item(%S.Item{id: "SR1", name: "Strawberries", price: {:GBP_pence, 500}})
     |> S.Cart.add_item(%S.Item{id: "CF1", name: "Coffee", price: {:GBP_pence, 1123}})
     |> S.Cart.add_item(%S.Item{id: "CF1", name: "Coffee", price: {:GBP_pence, 1123}})
+  end
+
+  def discount_registry_example() do
+    D.Registry.new()
   end
 
 end

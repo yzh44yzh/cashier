@@ -2,13 +2,20 @@
 
 ** Data Model
 
-- [X] Currency & Money `{:eurocent, 311}`
+- [X] Currency & Price
 - [X] Item
 - [X] Shopping Cart
-- [ ] Shopping Cart test
-- [ ] dialyzer
-- [ ] Discount Strategy
-- [ ] Discount Strategy test
+  - [X] test
+  - [X] dialyzer
+- [-] Discount Strategy
+  - [X] protocol
+  - [X] registry
+  - [ ] buy-one-get-one-free strategy
+    - [ ] test
+  - [ ] bulk strategy
+    - [ ] test
+  - [ ] fraction strategy
+    - [ ] test
 
 
 ** Logic
@@ -18,8 +25,7 @@
   - [ ] Implementations
 
 - [ ] Calc total price
-  - [ ] Group shopping cart by items
-  - [ ] Find strategy for group
+  - [ ] Find strategy for item
   - [ ] Apply strategy
   - [ ] Rounding
 
