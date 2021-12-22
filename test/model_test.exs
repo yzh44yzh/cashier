@@ -1,6 +1,7 @@
 defmodule ModelTest do
   use ExUnit.Case
   alias Cashier.Model.Shop, as: S
+  alias Cashier.Model.Discount, as: D
 
   test "shopping cart" do
     tea = %S.Item{id: "GR1", name: "Green tea", price: {:GBP_pence, 311}}
@@ -40,4 +41,32 @@ defmodule ModelTest do
       items: %{tea => 3, coffee => 1, strawberries => 2}
     }
   end
+
+  test "BuyOneGetOneFreeStrategy" do
+    price = {:GBP_pence, 311}
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 1)
+    assert D.Strategy.apply(strategy) ==  price
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 2)
+    assert D.Strategy.apply(strategy) ==  price
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 3)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 2}
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 4)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 2}
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 5)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 3}
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 6)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 3}
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 7)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 4}
+
+    strategy = D.BuyOneGetOneFreeStrategy.new(price, 8)
+    assert D.Strategy.apply(strategy) == {:GBP_pence, 311 * 4}
+  end
+
 end

@@ -10,19 +10,16 @@
 - [-] Discount Strategy
   - [X] protocol
   - [X] registry
-  - [ ] buy-one-get-one-free strategy
-    - [ ] test
+  - [X] buy-one-get-one-free strategy
+    - [X] test
   - [ ] bulk strategy
+    - [ ] exception if item.price.currency doesn't match strategy.price.currency
     - [ ] test
   - [ ] fraction strategy
     - [ ] test
 
 
 ** Logic
-
-- [ ] Discount strategy
-  - [ ] Protocol
-  - [ ] Implementations
 
 - [ ] Calc total price
   - [ ] Find strategy for item
@@ -33,6 +30,8 @@
   - [ ] price
   - [ ] item
   - [ ] cart
+
+- [ ] Samples in main module
 
 
 ** Tests
@@ -46,3 +45,4 @@
 
 - [ ] Task description
 - [ ] Solution description
+- [ ] Usage samples
