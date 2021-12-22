@@ -1,0 +1,42 @@
+* Cashier
+
+** Data Model
+
+- [X] Currency & Money `{:eurocent, 311}`
+- [X] Item
+- [X] Shopping Cart
+- [ ] Discount Strategy
+
+- [ ] Shopping Cart test
+- [ ] Discount Strategy test
+
+
+** Logic
+
+- [ ] Discount strategy
+  - [ ] Protocol
+  - [ ] Implementations
+
+- [ ] Calc total price
+  - [ ] Group shopping cart by items
+  - [ ] Find strategy for group
+  - [ ] Apply strategy
+  - [ ] Rounding
+
+- [ ] pretty print
+  - [ ] price
+  - [ ] item
+  - [ ] cart
+
+
+** Tests
+
+- [ ] Unit tests
+- [ ] Doc tests
+- [ ] Dialyzer
+
+
+** Documentation
+
+- [ ] Task description
+- [ ] Solution description

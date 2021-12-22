@@ -1,18 +1,13 @@
 defmodule Cashier do
-  @moduledoc """
-  Documentation for `Cashier`.
-  """
 
-  @doc """
-  Hello world.
+  alias Cashier.Model.Shop, as: S
 
-  ## Examples
-
-      iex> Cashier.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def shopping_cart_example() do
+    S.Cart.new()
+    |> S.Cart.add_item(%S.Item{id: "GR1", name: "Green tea", price: {:GBP_pence, 311}})
+    |> S.Cart.add_item(%S.Item{id: "SR1", name: "Strawberries", price: {:GBP_pence, 500}})
+    |> S.Cart.add_item(%S.Item{id: "CF1", name: "Coffee", price: {:GBP_pence, 1123}})
+    |> S.Cart.add_item(%S.Item{id: "CF1", name: "Coffee", price: {:GBP_pence, 1123}})
   end
+
 end
