@@ -16,12 +16,12 @@
   - [X] remove protocols
   - [X] buy-some-get-one-free strategy
   - [X] back to protocols
-  - [-] bulk strategy
+  - [X] bulk strategy
     - [X] exception if item.price.currency doesn't match strategy.price.currency
-    - [ ] exception if item.price.amount less than strategy.price.amount
-    - [ ] happy path test
-    - [ ] currency exception test
-    - [ ] price exception test
+    - [X] exception if item.price.amount less than strategy.price.amount
+    - [X] happy path test
+    - [X] currency exception test
+    - [X] price exception test
   - [ ] fraction strategy
     - [ ] test
 

@@ -25,4 +25,24 @@ defmodule Cashier.Model do
     end
   end
 
+  defmodule PriceLimitError do
+    alias Cashier.Model
+
+    defexception [
+      :message,
+      :price_limit,
+      :price_received
+    ]
+
+    @impl true
+    @spec exception({Model.price, Model.price}) :: Exception.t
+    def exception({price_limit, price_received}) do
+      %PriceLimitError{
+        message: "price #{inspect price_received} should be less than #{inspect price_limit}",
+        price_limit: price_limit,
+        price_received: price_received
+      }
+    end
+  end
+
 end

@@ -72,14 +72,12 @@ defmodule Cashier.Model.Discount do
           raise Model.CurrencyMismatchError, {drop_currency, original_currency}
         end
 
+        # strategy shouldn't increase price
         if drop_amount >= original_amount do
-          raise """
-          drop price #{inspect drop_price}
-          should be less than original price #{inspect original_price}
-          """
+          raise Model.PriceLimitError, {original_price, drop_price}
         end
 
-        if quantity > bulk_size do
+        if quantity >= bulk_size do
           {original_currency, quantity * drop_amount}
         else
           {original_currency, quantity * original_amount}

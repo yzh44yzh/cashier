@@ -1,46 +1,7 @@
-defmodule ModelTest do
+defmodule DiscountTest do
   use ExUnit.Case
-  alias Cashier.Model.Shop, as: S
+  alias Cashier.Model
   alias Cashier.Model.Discount, as: D
-
-  test "shopping cart" do
-    tea = %S.Item{id: "GR1", name: "Green tea", price: {:GBP_pence, 311}}
-    strawberries = %S.Item{id: "SR1", name: "Strawberries", price: {:GBP_pence, 500}}
-    coffee = %S.Item{id: "CF1", name: "Coffee", price: {:GBP_pence, 1123}}
-
-    cart = S.Cart.new()
-    assert cart == %S.Cart{items: %{}}
-
-    cart = S.Cart.add_item(cart, tea)
-    assert cart == %S.Cart{
-      items: %{tea => 1}
-    }
-
-    cart = S.Cart.add_item(cart, tea)
-    assert cart == %S.Cart{
-      items: %{tea => 2}
-    }
-
-    cart = S.Cart.add_item(cart, coffee)
-    assert cart == %S.Cart{
-      items: %{tea => 2, coffee => 1}
-    }
-
-    cart = S.Cart.add_item(cart, strawberries)
-    assert cart == %S.Cart{
-      items: %{tea => 2, coffee => 1, strawberries => 1}
-    }
-
-    cart = S.Cart.add_item(cart, strawberries)
-    assert cart == %S.Cart{
-      items: %{tea => 2, coffee => 1, strawberries => 2}
-    }
-
-    cart = S.Cart.add_item(cart, tea)
-    assert cart == %S.Cart{
-      items: %{tea => 3, coffee => 1, strawberries => 2}
-    }
-  end
 
   test "Buy 2 get 1 free Strategy" do
     price = {:GBP_pence, 311}
@@ -83,6 +44,46 @@ defmodule ModelTest do
     assert D.Strategy.apply(strategy, price, 8) == {:USD_cent, 4200 * 7}
     assert D.Strategy.apply(strategy, price, 9) == {:USD_cent, 4200 * 8}
     assert D.Strategy.apply(strategy, price, 10) == {:USD_cent, 4200 * 8}
+  end
+
+  test "Bulk 3 Strategy" do
+    price = {:GBP_pence, 500}
+    strategy = D.BulkStrategy.new(3, {:GBP_pence, 450})
+    assert D.Strategy.apply(strategy, price, 1) == {:GBP_pence, 500}
+    assert D.Strategy.apply(strategy, price, 2) == {:GBP_pence, 500 * 2}
+    assert D.Strategy.apply(strategy, price, 3) == {:GBP_pence, 450 * 3}
+    assert D.Strategy.apply(strategy, price, 4) == {:GBP_pence, 450 * 4}
+    assert D.Strategy.apply(strategy, price, 5) == {:GBP_pence, 450 * 5}
+  end
+
+  test "Bulk 5 Strategy" do
+    price = {:GBP_pence, 500}
+    strategy = D.BulkStrategy.new(5, {:GBP_pence, 430})
+    assert D.Strategy.apply(strategy, price, 1) == {:GBP_pence, 500}
+    assert D.Strategy.apply(strategy, price, 2) == {:GBP_pence, 500 * 2}
+    assert D.Strategy.apply(strategy, price, 3) == {:GBP_pence, 500 * 3}
+    assert D.Strategy.apply(strategy, price, 4) == {:GBP_pence, 500 * 4}
+    assert D.Strategy.apply(strategy, price, 5) == {:GBP_pence, 430 * 5}
+    assert D.Strategy.apply(strategy, price, 6) == {:GBP_pence, 430 * 6}
+  end
+
+  test "BulkStrategy exceptions" do
+    price = {:GBP_pence, 500}
+    strategy = D.BulkStrategy.new(3, {:EURO_cent, 450})
+
+    assert_raise Model.CurrencyMismatchError,
+      "currency needed: EURO_cent, currency_received: GBP_pence",
+      fn() ->
+        D.Strategy.apply(strategy, price, 1)
+      end
+
+    strategy = D.BulkStrategy.new(3, {:GBP_pence, 550})
+
+    assert_raise Model.PriceLimitError,
+      "price {:GBP_pence, 550} should be less than {:GBP_pence, 500}",
+      fn() ->
+        D.Strategy.apply(strategy, price, 1)
+      end
   end
 
 end
