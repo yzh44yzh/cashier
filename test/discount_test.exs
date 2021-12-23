@@ -86,7 +86,7 @@ defmodule DiscountTest do
 
   test "2/3 FractionStrategy" do
     price = {:GBP_pence, 1123}
-    strategy = D.FractionStrategy.new(2, 3, 3)
+    strategy = D.FractionStrategy.new(3, 2, 3)
     assert D.Strategy.apply(strategy, price, 1) == {:GBP_pence, 1123}
     assert D.Strategy.apply(strategy, price, 2) == {:GBP_pence, 1123 * 2}
     assert D.Strategy.apply(strategy, price, 3) == {:GBP_pence, div(1123 * 3 * 2, 3)}
@@ -97,7 +97,7 @@ defmodule DiscountTest do
 
   test "3/4 FractionStrategy" do
     price = {:EURO_cent, 1123}
-    strategy = D.FractionStrategy.new(3, 4, 3)
+    strategy = D.FractionStrategy.new(3, 3, 4)
     assert D.Strategy.apply(strategy, price, 1) == {:EURO_cent, 1123}
     assert D.Strategy.apply(strategy, price, 2) == {:EURO_cent, 1123 * 2}
     assert D.Strategy.apply(strategy, price, 3) == {:EURO_cent, div(1123 * 3 * 3, 4)}

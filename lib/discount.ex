@@ -91,20 +91,20 @@ defmodule Cashier.Model.Discount do
     alias Cashier.Model
 
     @type t :: %__MODULE__{
+      quantity_limit: pos_integer,
       numerator: non_neg_integer,
-      denominator: pos_integer,
-      quantity_limit: pos_integer
+      denominator: pos_integer
     }
 
     @enforce_keys [:numerator, :denominator, :quantity_limit]
     defstruct [:numerator, :denominator, :quantity_limit]
 
-    @spec new(non_neg_integer, pos_integer, pos_integer) :: t
-    def new(numerator, denominator, quantity_limit) do
+    @spec new(pos_integer, non_neg_integer, pos_integer) :: t
+    def new(quantity_limit, numerator, denominator) do
       %__MODULE__{
+        quantity_limit: quantity_limit,
         numerator: numerator,
-        denominator: denominator,
-        quantity_limit: quantity_limit
+        denominator: denominator
       }
     end
 
@@ -114,9 +114,9 @@ defmodule Cashier.Model.Discount do
       @spec apply(FractionStrategy.t, Model.price, Model.quantity) :: Model.price
       def apply(strategy, price_per_item, quantity) do
         %FractionStrategy{
+          quantity_limit: quantity_limit,
           numerator: numerator,
-          denominator: denominator,
-          quantity_limit: quantity_limit
+          denominator: denominator
         } = strategy
 
         {currency, amount} = price_per_item
@@ -143,6 +143,12 @@ defmodule Cashier.Model.Discount do
     @spec new() :: t
     def new() do
       %__MODULE__{}
+    end
+
+    @spec add_strategy(t, Item.id, Strategy.t) :: t
+    def add_strategy(register, id, strategy) do
+      items = Map.put(register.items, id, strategy)
+      %__MODULE__{register | items: items}
     end
   end
 

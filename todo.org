@@ -28,19 +28,24 @@
 
 ** Logic
 
-- [ ] Calc total price
-  - [ ] Find strategy for item
-  - [ ] Apply strategy
-  - [ ] Rounding
-  - [ ] test
+- [X] Calc total price
+  - [X] Find strategy for item
+  - [X] Apply strategy
+  - [X] Rounding
+
+- [X] Samples in main module
+
+- [ ] tests
+  - [ ] sum_prices
+  - [ ] calc_item
+  - [ ] calc_total
 
 - [ ] pretty print
   - [ ] price
   - [ ] item
   - [ ] cart
-  - [ ] test
+  - [ ] tests
 
-- [ ] Samples in main module
 
 
 ** Documentation
