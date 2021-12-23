@@ -12,9 +12,12 @@
   - [X] registry
   - [X] buy-one-get-one-free strategy
     - [X] test
-  - [ ] bulk strategy
-    - [ ] exception if item.price.currency doesn't match strategy.price.currency
-    - [ ] test
+  - [-] bulk strategy
+    - [X] exception if item.price.currency doesn't match strategy.price.currency
+    - [ ] exception if item.price.amount less than strategy.price.amount
+    - [ ] happy path test
+    - [ ] currency exception test
+    - [ ] price exception test
   - [ ] fraction strategy
     - [ ] test
 

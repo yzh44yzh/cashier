@@ -1,35 +1,62 @@
 defmodule Cashier.Model.Discount do
 
-  defprotocol Strategy do
-    alias Cashier.Model
-
-    @spec apply(Strategy.t) :: Model.price
-    def apply(strategy)
-  end
-
   defmodule BuyOneGetOneFreeStrategy do
     alias Cashier.Model
 
+    @type t :: BuyOneGetOneFreeStrategy
+
+    @spec apply(Model.price, Model.quantity) :: Model.price
+    def apply(price_per_item, quantity) do
+      paid_quantity = div(quantity, 2) + rem(quantity, 2)
+      {currency, amount} = price_per_item
+      {currency, amount * paid_quantity}
+    end
+  end
+
+  defmodule BulkStrategy do
+    alias Cashier.Model
+
     @type t :: %__MODULE__{
-      price: Model.price,
-      quantity: Model.quantity
+      bulk_size: pos_integer,
+      drop_price: Model.price
     }
 
-    @enforce_keys [:price, :quantity]
-    defstruct [:price, :quantity]
+    @enforce_keys [:bulk_size, :drop_price]
+    defstruct [:bulk_size, :drop_price]
 
-    @spec new(Model.price, Model.quantity) :: t
-    def new(price, quantity) do
-      %__MODULE__{price: price, quantity: quantity}
+    @spec new(pos_integer, Model.price) :: t
+    def new(bulk_size, drop_price) do
+      %__MODULE__{
+        bulk_size: bulk_size,
+        drop_price: drop_price
+      }
     end
 
-    defimpl Strategy do
-      @spec apply(BuyOneGetOneFreeStrategy.t) :: Model.price
-      def apply(strategy) do
-        %BuyOneGetOneFreeStrategy{price: price_per_item, quantity: quantity} = strategy
-        paid_quantity = div(quantity, 2) + rem(quantity, 2)
-        {currency, amount} = price_per_item
-        {currency, amount * paid_quantity}
+    @spec apply(BulkStrategy.t, Model.price, Model.quantity) :: Model.price
+    def apply(strategy, original_price, quantity) do
+      %BulkStrategy{
+        bulk_size: bulk_size,
+        drop_price: drop_price
+      } = strategy
+
+      {drop_currency, drop_amount} = drop_price
+      {original_currency, original_amount} = original_price
+
+      if drop_currency != original_currency do
+        raise Model.CurrencyMismatchError, {drop_currency, original_currency}
+      end
+
+      if drop_amount >= original_amount do
+        raise """
+        drop price #{inspect drop_price}
+        should be less than original price #{inspect original_price}
+        """
+      end
+
+      if quantity > bulk_size do
+        {original_currency, quantity * drop_amount}
+      else
+        {original_currency, quantity * original_amount}
       end
     end
   end
@@ -37,8 +64,9 @@ defmodule Cashier.Model.Discount do
   defmodule Registry do
     alias Cashier.Model.Shop.Item
 
+    @type strategy :: BuyOneGetOneFreeStrategy.t | BulkStrategy.t
     @type t :: %__MODULE__{
-      items: %{Item.id => Strategy}
+      items: %{Item.id => strategy}
     }
 
     defstruct [items: %{}]
