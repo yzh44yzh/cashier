@@ -42,18 +42,53 @@ defmodule ModelTest do
     }
   end
 
-  test "BuyOneGetOneFreeStrategy" do
-    alias D.BuyOneGetOneFreeStrategy, as: S
+  test "Buy 2 get 1 free Strategy" do
+    alias D.BuySomeGetOneFreeStrategy, as: S
 
     price = {:GBP_pence, 311}
-    assert S.apply(price, 1) ==  price
-    assert S.apply(price, 2) ==  price
-    assert S.apply(price, 3) == {:GBP_pence, 311 * 2}
-    assert S.apply(price, 4) == {:GBP_pence, 311 * 2}
-    assert S.apply(price, 5) == {:GBP_pence, 311 * 3}
-    assert S.apply(price, 6) == {:GBP_pence, 311 * 3}
-    assert S.apply(price, 7) == {:GBP_pence, 311 * 4}
-    assert S.apply(price, 8) == {:GBP_pence, 311 * 4}
+    strategy = S.new(2)
+    assert S.apply(strategy, price, 1) == {:GBP_pence, 311}
+    assert S.apply(strategy, price, 2) == {:GBP_pence, 311}
+    assert S.apply(strategy, price, 3) == {:GBP_pence, 311 * 2}
+    assert S.apply(strategy, price, 4) == {:GBP_pence, 311 * 2}
+    assert S.apply(strategy, price, 5) == {:GBP_pence, 311 * 3}
+    assert S.apply(strategy, price, 6) == {:GBP_pence, 311 * 3}
+    assert S.apply(strategy, price, 7) == {:GBP_pence, 311 * 4}
+    assert S.apply(strategy, price, 8) == {:GBP_pence, 311 * 4}
+  end
+
+  test "Buy 3 get 1 free Strategy" do
+    alias D.BuySomeGetOneFreeStrategy, as: S
+
+    price = {:EURO_cent, 500}
+    strategy = S.new(3)
+    assert S.apply(strategy, price, 1) == {:EURO_cent, 500}
+    assert S.apply(strategy, price, 2) == {:EURO_cent, 500 * 2}
+    assert S.apply(strategy, price, 3) == {:EURO_cent, 500 * 2}
+    assert S.apply(strategy, price, 4) == {:EURO_cent, 500 * 3}
+    assert S.apply(strategy, price, 5) == {:EURO_cent, 500 * 4}
+    assert S.apply(strategy, price, 6) == {:EURO_cent, 500 * 4}
+    assert S.apply(strategy, price, 7) == {:EURO_cent, 500 * 5}
+    assert S.apply(strategy, price, 8) == {:EURO_cent, 500 * 6}
+    assert S.apply(strategy, price, 9) == {:EURO_cent, 500 * 6}
+    assert S.apply(strategy, price, 10) == {:EURO_cent, 500 * 7}
+  end
+
+  test "Buy 5 get 1 free Strategy" do
+    alias D.BuySomeGetOneFreeStrategy, as: S
+
+    price = {:USD_cent, 4200}
+    strategy = S.new(5)
+    assert S.apply(strategy, price, 1) == {:USD_cent, 4200}
+    assert S.apply(strategy, price, 2) == {:USD_cent, 4200 * 2}
+    assert S.apply(strategy, price, 3) == {:USD_cent, 4200 * 3}
+    assert S.apply(strategy, price, 4) == {:USD_cent, 4200 * 4}
+    assert S.apply(strategy, price, 5) == {:USD_cent, 4200 * 4}
+    assert S.apply(strategy, price, 6) == {:USD_cent, 4200 * 5}
+    assert S.apply(strategy, price, 7) == {:USD_cent, 4200 * 6}
+    assert S.apply(strategy, price, 8) == {:USD_cent, 4200 * 7}
+    assert S.apply(strategy, price, 9) == {:USD_cent, 4200 * 8}
+    assert S.apply(strategy, price, 10) == {:USD_cent, 4200 * 8}
   end
 
 end

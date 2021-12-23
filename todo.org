@@ -12,6 +12,10 @@
   - [X] registry
   - [X] buy-one-get-one-free strategy
     - [X] test
+  - [X] bulk strategy
+  - [X] remove protocols
+  - [X] buy-some-get-one-free strategy
+  - [ ] back to protocols
   - [-] bulk strategy
     - [X] exception if item.price.currency doesn't match strategy.price.currency
     - [ ] exception if item.price.amount less than strategy.price.amount

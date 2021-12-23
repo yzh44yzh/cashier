@@ -1,13 +1,24 @@
 defmodule Cashier.Model.Discount do
 
-  defmodule BuyOneGetOneFreeStrategy do
+  defmodule BuySomeGetOneFreeStrategy do
     alias Cashier.Model
 
-    @type t :: BuyOneGetOneFreeStrategy
+    @type t :: %__MODULE__{
+      some: pos_integer
+    }
 
-    @spec apply(Model.price, Model.quantity) :: Model.price
-    def apply(price_per_item, quantity) do
-      paid_quantity = div(quantity, 2) + rem(quantity, 2)
+    @enforce_keys [:some]
+    defstruct [:some]
+
+    @spec new(pos_integer) :: t
+    def new(some \\ 2) do
+      %__MODULE__{some: some}
+    end
+
+    @spec apply(t, Model.price, Model.quantity) :: Model.price
+    def apply(strategy, price_per_item, quantity) do
+      %BuySomeGetOneFreeStrategy{some: some} = strategy
+      paid_quantity = quantity - div(quantity, some)
       {currency, amount} = price_per_item
       {currency, amount * paid_quantity}
     end
@@ -64,7 +75,7 @@ defmodule Cashier.Model.Discount do
   defmodule Registry do
     alias Cashier.Model.Shop.Item
 
-    @type strategy :: BuyOneGetOneFreeStrategy.t | BulkStrategy.t
+    @type strategy :: BuySomeGetOneFreeStrategy.t | BulkStrategy.t
     @type t :: %__MODULE__{
       items: %{Item.id => strategy}
     }
