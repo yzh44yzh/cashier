@@ -2,6 +2,7 @@ defmodule Cashier do
   alias Cashier.Model
   alias Cashier.Model.Shop, as: S
   alias Cashier.Model.Discount, as: D
+  alias Cashier.PrettyPrinter, as: P
 
   @spec calc_total(S.Cart.t, D.Registry.t) :: Model.price | nil
   def calc_total(cart, _discounts) when map_size(cart.items) == 0, do: nil
@@ -44,7 +45,9 @@ defmodule Cashier do
   def example() do
     cart = shopping_cart_example()
     discounts = discount_registry_example()
-    calc_total(cart, discounts)
+    total = calc_total(cart, discounts)
+    IO.puts(P.print_cart(cart))
+    IO.puts("Total: " <> P.print_price(total))
   end
 
   def shopping_cart_example() do

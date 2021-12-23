@@ -26,7 +26,7 @@
     - [X] test
 
 
-** Logic
+** DONE Logic
 
 - [X] Calc total price
   - [X] Find strategy for item
@@ -40,10 +40,10 @@
   - [X] calc_item
   - [X] calc_total
 
-- [ ] pretty print
-  - [ ] price
-  - [ ] item
-  - [ ] cart
+- [X] pretty print
+  - [X] price
+  - [X] item
+  - [X] cart
 
 
 
