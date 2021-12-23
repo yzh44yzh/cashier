@@ -87,6 +87,50 @@ defmodule Cashier.Model.Discount do
 
   end
 
+  defmodule FractionStrategy do
+    alias Cashier.Model
+
+    @type t :: %__MODULE__{
+      numerator: non_neg_integer,
+      denominator: pos_integer,
+      quantity_limit: pos_integer
+    }
+
+    @enforce_keys [:numerator, :denominator, :quantity_limit]
+    defstruct [:numerator, :denominator, :quantity_limit]
+
+    @spec new(non_neg_integer, pos_integer, pos_integer) :: t
+    def new(numerator, denominator, quantity_limit) do
+      %__MODULE__{
+        numerator: numerator,
+        denominator: denominator,
+        quantity_limit: quantity_limit
+      }
+    end
+
+    defimpl Strategy do
+      alias Cashier.Model
+
+      @spec apply(FractionStrategy.t, Model.price, Model.quantity) :: Model.price
+      def apply(strategy, price_per_item, quantity) do
+        %FractionStrategy{
+          numerator: numerator,
+          denominator: denominator,
+          quantity_limit: quantity_limit
+        } = strategy
+
+        {currency, amount} = price_per_item
+
+        if quantity >= quantity_limit do
+          {currency, div(amount * quantity * numerator, denominator)}
+        else
+          {currency, amount * quantity}
+        end
+      end
+    end
+
+  end
+
   defmodule Registry do
     alias Cashier.Model.Shop.Item
 

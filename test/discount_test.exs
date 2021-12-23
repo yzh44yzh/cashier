@@ -70,7 +70,6 @@ defmodule DiscountTest do
   test "BulkStrategy exceptions" do
     price = {:GBP_pence, 500}
     strategy = D.BulkStrategy.new(3, {:EURO_cent, 450})
-
     assert_raise Model.CurrencyMismatchError,
       "currency needed: EURO_cent, currency_received: GBP_pence",
       fn() ->
@@ -78,12 +77,33 @@ defmodule DiscountTest do
       end
 
     strategy = D.BulkStrategy.new(3, {:GBP_pence, 550})
-
     assert_raise Model.PriceLimitError,
       "price {:GBP_pence, 550} should be less than {:GBP_pence, 500}",
       fn() ->
         D.Strategy.apply(strategy, price, 1)
       end
+  end
+
+  test "2/3 FractionStrategy" do
+    price = {:GBP_pence, 1123}
+    strategy = D.FractionStrategy.new(2, 3, 3)
+    assert D.Strategy.apply(strategy, price, 1) == {:GBP_pence, 1123}
+    assert D.Strategy.apply(strategy, price, 2) == {:GBP_pence, 1123 * 2}
+    assert D.Strategy.apply(strategy, price, 3) == {:GBP_pence, div(1123 * 3 * 2, 3)}
+    assert D.Strategy.apply(strategy, price, 4) == {:GBP_pence, div(1123 * 4 * 2, 3)}
+    assert D.Strategy.apply(strategy, price, 5) == {:GBP_pence, div(1123 * 5 * 2, 3)}
+    assert D.Strategy.apply(strategy, price, 6) == {:GBP_pence, div(1123 * 6 * 2, 3)}
+  end
+
+  test "3/4 FractionStrategy" do
+    price = {:EURO_cent, 1123}
+    strategy = D.FractionStrategy.new(3, 4, 3)
+    assert D.Strategy.apply(strategy, price, 1) == {:EURO_cent, 1123}
+    assert D.Strategy.apply(strategy, price, 2) == {:EURO_cent, 1123 * 2}
+    assert D.Strategy.apply(strategy, price, 3) == {:EURO_cent, div(1123 * 3 * 3, 4)}
+    assert D.Strategy.apply(strategy, price, 4) == {:EURO_cent, div(1123 * 4 * 3, 4)}
+    assert D.Strategy.apply(strategy, price, 5) == {:EURO_cent, div(1123 * 5 * 3, 4)}
+    assert D.Strategy.apply(strategy, price, 6) == {:EURO_cent, div(1123 * 6 * 3, 4)}
   end
 
 end

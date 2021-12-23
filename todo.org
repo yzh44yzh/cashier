@@ -1,13 +1,13 @@
 * Cashier
 
-** Data Model
+** DONE Data Model
 
 - [X] Currency & Price
 - [X] Item
 - [X] Shopping Cart
   - [X] test
   - [X] dialyzer
-- [-] Discount Strategy
+- [X] Discount Strategy
   - [X] protocol
   - [X] registry
   - [X] buy-one-get-one-free strategy
@@ -22,8 +22,8 @@
     - [X] happy path test
     - [X] currency exception test
     - [X] price exception test
-  - [ ] fraction strategy
-    - [ ] test
+  - [X] fraction strategy
+    - [X] test
 
 
 ** Logic
@@ -32,20 +32,15 @@
   - [ ] Find strategy for item
   - [ ] Apply strategy
   - [ ] Rounding
+  - [ ] test
 
 - [ ] pretty print
   - [ ] price
   - [ ] item
   - [ ] cart
+  - [ ] test
 
 - [ ] Samples in main module
-
-
-** Tests
-
-- [ ] Unit tests
-- [ ] Doc tests
-- [ ] Dialyzer
 
 
 ** Documentation
