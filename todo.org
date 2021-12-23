@@ -35,16 +35,15 @@
 
 - [X] Samples in main module
 
-- [ ] tests
-  - [ ] sum_prices
-  - [ ] calc_item
-  - [ ] calc_total
+- [X] tests
+  - [X] sum_prices
+  - [X] calc_item
+  - [X] calc_total
 
 - [ ] pretty print
   - [ ] price
   - [ ] item
   - [ ] cart
-  - [ ] tests
 
 
 

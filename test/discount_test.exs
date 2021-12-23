@@ -1,5 +1,5 @@
 defmodule DiscountTest do
-  use ExUnit.Case
+  use ExUnit.Case,  async: true
   alias Cashier.Model
   alias Cashier.Model.Discount, as: D
 

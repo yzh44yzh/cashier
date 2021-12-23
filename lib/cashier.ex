@@ -3,12 +3,6 @@ defmodule Cashier do
   alias Cashier.Model.Shop, as: S
   alias Cashier.Model.Discount, as: D
 
-  def example() do
-    cart = shopping_cart_example()
-    discounts = discount_registry_example()
-    calc_total(cart, discounts)
-  end
-
   @spec calc_total(S.Cart.t, D.Registry.t) :: Model.price | nil
   def calc_total(cart, _discounts) when map_size(cart.items) == 0, do: nil
   def calc_total(cart, discounts) do
@@ -24,7 +18,7 @@ defmodule Cashier do
 
   @spec calc_item(S.Item.t, Model.quantity, D.Registry.t) :: Model.price
   def calc_item(item, quantity, discounts) do
-    case Map.fetch(discounts, item.id) do
+    case Map.fetch(discounts.items, item.id) do
       {:ok, strategy} ->
         D.Strategy.apply(strategy, item.price, quantity)
       :error ->
@@ -43,6 +37,14 @@ defmodule Cashier do
     end
 
     {currency1, amount1 + amount2}
+  end
+
+  ## Usage example
+
+  def example() do
+    cart = shopping_cart_example()
+    discounts = discount_registry_example()
+    calc_total(cart, discounts)
   end
 
   def shopping_cart_example() do
@@ -70,14 +72,14 @@ defmodule Cashier do
   end
 
   def discount_registry_example() do
-    one_free = D.BuySomeGetOneFreeStrategy.new(2)
+    free = D.BuySomeGetOneFreeStrategy.new(2)
     bulk = D.BulkStrategy.new(3, {:GBP_pence, 450})
-    fraction_2_3 = D.FractionStrategy.new(3, 2, 3)
+    fraction = D.FractionStrategy.new(3, 2, 3)
 
     D.Registry.new()
-    |> D.Registry.add_strategy("GR1", one_free)
+    |> D.Registry.add_strategy("GR1", free)
     |> D.Registry.add_strategy("SR1", bulk)
-    |> D.Registry.add_strategy("CF1", fraction_2_3)
+    |> D.Registry.add_strategy("CF1", fraction)
   end
 
 end

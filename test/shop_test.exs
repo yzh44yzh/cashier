@@ -1,5 +1,5 @@
 defmodule ShopTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Cashier.Model.Shop, as: S
 
   test "shopping cart" do
