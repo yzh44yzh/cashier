@@ -40,7 +40,7 @@ defmodule Cashier do
     {currency1, amount1 + amount2}
   end
 
-  ## Usage example
+  ## Usage Example
 
   def example() do
     cart = shopping_cart_example()

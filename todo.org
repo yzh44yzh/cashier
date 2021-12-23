@@ -47,8 +47,7 @@
 
 
 
-** Documentation
+** DONE Documentation
 
-- [ ] Task description
-- [ ] Solution description
-- [ ] Usage samples
+- [X] Task description
+- [X] Usage samples
