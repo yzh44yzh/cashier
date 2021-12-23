@@ -1,5 +1,6 @@
 defmodule Cashier do
 
+  alias Cashier.Model
   alias Cashier.Model.Shop, as: S
   alias Cashier.Model.Discount, as: D
 
@@ -29,6 +30,8 @@ defmodule Cashier do
 
   def discount_registry_example() do
     D.Registry.new()
+
+    raise Model.CurrencyMismatchError, {:EURO_cent, :USD_cent}
   end
 
 end
